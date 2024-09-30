@@ -8,7 +8,7 @@ export async function POST(request) {
     console.log('Received body:', body); // Log incoming body for debugging
 
     // Destructure the request body
-    const { location, time, duration, temperature, wind, precipitation, venueType } = body;
+    const { location, time, duration, temperature, wind, precipitation, venueType, gender } = body;
 
     // Validate that all required fields are present
     if (!location || !time || !duration || temperature === undefined || wind === undefined || !precipitation || !venueType) {
@@ -16,9 +16,9 @@ export async function POST(request) {
       return NextResponse.json({ error: 'Missing or invalid data in request body.' }, { status: 400 });
     }
 
-    // Parse numerical values
-    const parsedTemperature = parseFloat(temperature);
-    const parsedWind = parseFloat(wind);
+    // Parse numerical values and round to whole numbers
+    const parsedTemperature = Math.round(parseFloat(temperature));
+    const parsedWind = Math.round(parseFloat(wind));
     const parsedDuration = parseInt(duration, 10);
 
     // Validate parsed values
@@ -32,8 +32,13 @@ export async function POST(request) {
       apiKey: process.env.OPENAI_API_KEY,
     });
 
-    // Construct the prompt
-    const prompt = `I'm going to a ${venueType} venue called ${location} at ${time} for ${parsedDuration} hours. The weather is ${parsedTemperature} degrees F with ${parsedWind} mph wind and ${precipitation}. Do I need a jacket? Provide a brief recommendation.`;
+    // Construct the prompt based on whether gender is provided or not
+    let prompt;
+    if (gender && gender !== "Prefer Not to Say") {
+      prompt = `I'm a ${gender} going to ${location} at ${time} for ${parsedDuration} hours and staying ${venueType}. The weather will be ${parsedTemperature}°F with ${parsedWind} mph wind and ${precipitation}. Do I need to bring a jacket? Provide a short recommendation.`;
+    } else {
+      prompt = `I'm going to ${location} at ${time} for ${parsedDuration} hours and staying ${venueType}. The weather will be ${parsedTemperature}°F with ${parsedWind} mph wind and ${precipitation}. Do I need to bring a jacket? Provide a short recommendation.`;
+    }
 
     // Log the prompt and payload for debugging
     console.log("Payload being sent to OpenAI:", {
