@@ -199,22 +199,22 @@ export default function Home() {
         <Image
           src="/images/jacketscore-logo.png"
           alt="JacketScore logo"
-          width={350}
-          height={80}
+          width={175} // Smaller logo size
+          height={40}
           priority
         />
-
+  
         <h1 className="text-4xl font-extrabold mb-4">Do You Need a Jacket?</h1>
         <p className="mb-4">
           Use JacketScore, powered by AI, to decide if you&apos;ll need a jacket based on your location, weather, and duration of stay.
         </p>
-
+  
         {errorMessage && (
           <div className="mt-4 text-red-500">
             <p>Error: {errorMessage}</p>
           </div>
         )}
-
+  
         {!showResults ? (
           <>
             {/* Google Places Autocomplete */}
@@ -222,7 +222,7 @@ export default function Home() {
               <label className="block mb-2 text-lg font-semibold text-center">Where are you going?</label>
               <PlaceAutocomplete onSelect={handlePlaceSelect} />
             </div>
-
+  
             {/* Venue Type Buttons */}
             <div className="mt-6 w-full">
               <label className="block mb-2 text-lg font-semibold">Are you staying indoors or outdoors?</label>
@@ -241,7 +241,7 @@ export default function Home() {
                 </button>
               </div>
             </div>
-
+  
             {/* Arrival Time Slider */}
             <div className="mt-6 w-full">
               <label className="block mb-2 text-lg font-semibold">What time are you arriving?</label>
@@ -255,7 +255,7 @@ export default function Home() {
               />
               <div className="text-center text-sm mt-2 font-semibold">Arrival Time: {arrivalTime || hoursArray[0]}</div>
             </div>
-
+  
             {/* Duration Slider */}
             <div className="mt-6 w-full">
               <label className="block mb-2 text-lg font-semibold">How long will you be staying? (hours)</label>
@@ -269,7 +269,7 @@ export default function Home() {
               />
               <div className="text-center text-sm mt-2 font-semibold">Duration: {duration} hours</div>
             </div>
-
+  
             {/* Gender Selection */}
             <div className="mt-6 w-full">
               <label className="block mb-2 text-lg font-semibold">What is your gender?</label>
@@ -294,7 +294,7 @@ export default function Home() {
                 </button>
               </div>
             </div>
-
+  
             {/* Get Jacket Score Button */}
             <div className="mt-6 w-full">
               <button
@@ -354,7 +354,39 @@ export default function Home() {
             </div>
           </>
         )}
+  
+        {/* Attribution for the Icons and Buttons */}
+        <footer className="text-center text-sm mt-8">
+          <p>
+            Icons made by{" "}
+            <a
+              href="https://www.flaticon.com/free-icons/puffer-coat"
+              title="puffer coat icons"
+              className="text-blue-500 hover:underline"
+            >
+              Iconic Panda
+            </a>{" "}
+            from{" "}
+            <a
+              href="https://www.flaticon.com/"
+              title="Flaticon"
+              className="text-blue-500 hover:underline"
+            >
+              Flaticon
+            </a>
+          </p>
+          <p>
+            Button design inspiration from{" "}
+            <a
+              href="https://uiverse.io/Madflows/stale-baboon-45"
+              title="Uiverse Button Design"
+              className="text-blue-500 hover:underline"
+            >
+              Madflows on Uiverse.io
+            </a>
+          </p>
+        </footer>
       </main>
     </div>
-  );
+  );  
 }
