@@ -177,7 +177,7 @@ export default function Home() {
   };
 
   const getButtonClass = (isSelected) => {
-    return `button ${isSelected ? "selected" : ""}`;
+    return `button ${isSelected ? "selected" : ""} text-center`;
   };
 
   return (
@@ -191,29 +191,38 @@ export default function Home() {
           height={40}
           priority
         />
-  
-        <h1 className="text-4xl font-extrabold mb-4">Do You Need a Jacket?</h1>
-        <p className="mb-4">
-          Use JacketScore, powered by AI, to decide if you&apos;ll need a jacket based on your location, weather, and duration of stay.
-        </p>
-  
+
+        {!showResults && (
+          <>
+            <h1 className="text-4xl font-extrabold mb-4">Do You Need a Jacket?</h1>
+            <p className="mb-4">
+              Use JacketScore, powered by AI, to decide if you'll need a jacket based on your
+              location, weather, and duration of stay.
+            </p>
+          </>
+        )}
+
         {errorMessage && (
           <div className="mt-4 text-red-500">
             <p>Error: {errorMessage}</p>
           </div>
         )}
-  
+
         {!showResults ? (
           <>
             {/* Google Places Autocomplete */}
             <div className="w-full text-left">
-              <label className="block mb-2 text-lg font-semibold text-center">Where are you going?</label>
+              <label className="block mb-2 text-lg font-semibold text-center">
+                Where are you going?
+              </label>
               <PlaceAutocomplete onSelect={handlePlaceSelect} />
             </div>
-  
+
             {/* Venue Type Buttons */}
             <div className="mt-6 w-full">
-              <label className="block mb-2 text-lg font-semibold">Are you staying indoors or outdoors?</label>
+              <label className="block mb-2 text-lg font-semibold">
+                Are you staying indoors or outdoors?
+              </label>
               <div className="flex space-x-4 justify-center">
                 <button
                   className={getButtonClass(venueType === "Indoors")}
@@ -229,7 +238,7 @@ export default function Home() {
                 </button>
               </div>
             </div>
-  
+
             {/* Arrival Time Slider */}
             <div className="mt-6 w-full">
               <label className="block mb-2 text-lg font-semibold">What time are you arriving?</label>
@@ -241,12 +250,16 @@ export default function Home() {
                 onChange={(e) => setArrivalTime(hoursArray[e.target.value])}
                 className="w-full h-2 bg-gray-200 rounded-lg cursor-pointer dark:bg-gray-700"
               />
-              <div className="text-center text-sm mt-2 font-semibold">Arrival Time: {arrivalTime || hoursArray[0]}</div>
+              <div className="text-center text-sm mt-2 font-semibold">
+                Arrival Time: {arrivalTime || hoursArray[0]}
+              </div>
             </div>
-  
+
             {/* Duration Slider */}
             <div className="mt-6 w-full">
-              <label className="block mb-2 text-lg font-semibold">How long will you be staying? (hours)</label>
+              <label className="block mb-2 text-lg font-semibold">
+                How long will you be staying? (hours)
+              </label>
               <input
                 type="range"
                 min="1"
@@ -257,7 +270,7 @@ export default function Home() {
               />
               <div className="text-center text-sm mt-2 font-semibold">Duration: {duration} hours</div>
             </div>
-  
+
             {/* Gender Selection */}
             <div className="mt-6 w-full">
               <label className="block mb-2 text-lg font-semibold">What is your gender?</label>
@@ -282,7 +295,7 @@ export default function Home() {
                 </button>
               </div>
             </div>
-  
+
             {/* Get Jacket Score Button */}
             <div className="mt-6 w-full">
               <button
@@ -307,7 +320,7 @@ export default function Home() {
           <>
             {/* Results Section */}
             <div className="mt-4 w-full">
-              <h2 className="text-2xl">Your Jacket Score</h2>
+              <h2 className="text-4xl font-extrabold">Your Jacket Score</h2>
               {jacketScore !== null && <JacketScore score={jacketScore} />}
               {recommendation && (
                 <div className="mt-4">
@@ -318,31 +331,36 @@ export default function Home() {
               {weatherData && (
                 <div className="mt-4">
                   <h2 className="text-2xl">Weather Information</h2>
-                  {weatherData.iconCode && (
-                    <Image
-                      src={`https://openweathermap.org/img/wn/${weatherData.iconCode}@2x.png`}
-                      alt={weatherData.precipitation}
-                      width={100}
-                      height={100}
-                    />
-                  )}
-                  <p>Temperature: {weatherData.temp ? `${Math.round(weatherData.temp)}°F` : "N/A"}</p>
-                  <p>Wind Speed: {weatherData.windSpeed ? `${Math.round(weatherData.windSpeed)} mph` : "N/A"}</p>
-                  <p>Precipitation: {weatherData.precipitation ?? "N/A"}</p>
+                  <div className="flex flex-col items-center">
+                    {weatherData.iconCode && (
+                      <Image
+                        src={`https://openweathermap.org/img/wn/${weatherData.iconCode}@2x.png`}
+                        alt={weatherData.precipitation}
+                        width={100}
+                        height={100}
+                      />
+                    )}
+                    <p>
+                      Temperature:{" "}
+                      {weatherData.temp !== null ? `${weatherData.temp}°F` : "N/A"}
+                    </p>
+                    <p>
+                      Wind Speed:{" "}
+                      {weatherData.windSpeed !== null ? `${weatherData.windSpeed} mph` : "N/A"}
+                    </p>
+                    <p>Precipitation: {weatherData.precipitation ?? "N/A"}</p>
+                  </div>
                 </div>
               )}
               <div className="mt-4 w-full">
-                <button
-                  className="bg-gray-500 text-white p-2 rounded w-full hover:bg-gray-600 dark:bg-gray-700 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-500"
-                  onClick={handleEdit}
-                >
-                  Edit Inputs
+                <button className={getButtonClass(false)} onClick={handleEdit}>
+                  <span className="button-content">Edit Inputs</span>
                 </button>
               </div>
             </div>
           </>
         )}
-  
+
         {/* Attribution for the Icons and Buttons */}
         <footer className="text-center text-sm mt-8">
           <p>
@@ -376,5 +394,5 @@ export default function Home() {
         </footer>
       </main>
     </div>
-  );  
+  );
 }
