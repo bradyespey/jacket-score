@@ -16,9 +16,9 @@ export async function POST(request) {
       return NextResponse.json({ error: 'Missing or invalid data in request body.' }, { status: 400 });
     }
 
-    // Parse numerical values and round to whole numbers
-    const parsedTemperature = Math.round(parseFloat(temperature));
-    const parsedWind = Math.round(parseFloat(wind));
+    // Parse numerical values
+    const parsedTemperature = parseFloat(temperature);
+    const parsedWind = parseFloat(wind);
     const parsedDuration = parseInt(duration, 10);
 
     // Validate parsed values
@@ -32,13 +32,15 @@ export async function POST(request) {
       apiKey: process.env.OPENAI_API_KEY,
     });
 
-    // Construct the prompt based on whether gender is provided or not
-    let prompt;
-    if (gender && gender !== "Prefer Not to Say") {
-      prompt = `I'm a ${gender} going to ${location} at ${time} for ${parsedDuration} hours and staying ${venueType}. The weather will be ${parsedTemperature}°F with ${parsedWind} mph wind and ${precipitation}. Do I need to bring a jacket? Provide a short recommendation.`;
-    } else {
-      prompt = `I'm going to ${location} at ${time} for ${parsedDuration} hours and staying ${venueType}. The weather will be ${parsedTemperature}°F with ${parsedWind} mph wind and ${precipitation}. Do I need to bring a jacket? Provide a short recommendation.`;
+    // Construct the prompt
+    let prompt = `I'm going to a ${venueType} venue called ${location} at ${time} for ${parsedDuration} hours. The weather is ${parsedTemperature} degrees F with ${parsedWind} mph wind and ${precipitation}.`;
+
+    // Add gender to prompt if provided
+    if (gender) {
+      prompt += ` The person is ${gender}.`;
     }
+
+    prompt += ` Do I need a jacket? Provide a brief recommendation.`;
 
     // Log the prompt and payload for debugging
     console.log("Payload being sent to OpenAI:", {

@@ -1,3 +1,5 @@
+// src/app/page.js
+
 "use client";
 
 import Image from "next/image";
@@ -7,24 +9,25 @@ import JacketScore from "../components/JacketScore";
 import ClipLoader from "react-spinners/ClipLoader";
 
 export default function Home() {
+  const now = new Date();
+
+  // Generate an array of times for the next 12 hours
+  const hoursArray = [...Array(12).keys()].map((i) => {
+    const newHour = new Date(now.getTime() + i * 60 * 60 * 1000);
+    return newHour.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+  });
+
   const [selectedPlace, setSelectedPlace] = useState(null);
   const [venueType, setVenueType] = useState("");
   const [duration, setDuration] = useState(1);
-  const [arrivalTime, setArrivalTime] = useState(""); // New state for arrival time
+  const [arrivalTime, setArrivalTime] = useState(hoursArray[0]); // Set initial arrival time
   const [gender, setGender] = useState("");
   const [weatherData, setWeatherData] = useState(null);
   const [errorMessage, setErrorMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [recommendation, setRecommendation] = useState(null);
   const [jacketScore, setJacketScore] = useState(null);
-  const [showResults, setShowResults] = useState(false); // To toggle between input and results
-
-  const now = new Date();
-  const hoursArray = [...Array(12).keys()].map((i) => {
-    const newHour = new Date();
-    newHour.setHours(now.getHours() + i, 0, 0);
-    return newHour.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
-  });
+  const [showResults, setShowResults] = useState(false);
 
   const handlePlaceSelect = (place) => {
     setSelectedPlace(place);
@@ -72,46 +75,23 @@ export default function Home() {
       const lat = selectedPlace.geometry?.location.lat();
       const lon = selectedPlace.geometry?.location.lng();
 
-      // Ensure that `arrivalTime` is valid
-      if (!arrivalTime) {
-        setErrorMessage("Please select a valid arrival time.");
-        setIsLoading(false);
-        return;
-      }
-
-      // Ensure time splitting is safe by handling 12-hour format conversion
-      const [hoursPart, modifier] = arrivalTime.split(" "); // Handle AM/PM part
-      const [hoursStr, minutesStr] = hoursPart.split(":");
-      let hours = parseInt(hoursStr, 10);
-      const minutes = parseInt(minutesStr, 10);
-
-      // Correct for PM time format
-      if (modifier === "PM" && hours !== 12) {
-        hours += 12;
-      } else if (modifier === "AM" && hours === 12) {
-        hours = 0; // Midnight case
-      }
-
-      // Check for invalid times
-      if (isNaN(hours) || isNaN(minutes)) {
-        setErrorMessage("Invalid time selected.");
-        setIsLoading(false);
-        return;
-      }
-
-      // Calculate the timestamp for the arrival time
+      // Parse arrivalTime
       const now = new Date();
-      const arrivalDateTime = new Date(
-        now.getFullYear(),
-        now.getMonth(),
-        now.getDate(),
-        hours,
-        minutes
-      );
+      let arrivalDateTime = new Date(`${now.toDateString()} ${arrivalTime}`);
+
+      // If arrivalDateTime is earlier than now, add one day
+      if (arrivalDateTime < now) {
+        arrivalDateTime.setDate(arrivalDateTime.getDate() + 1);
+      }
 
       // Round the arrival time to the nearest 3-hour interval
       const roundedArrivalTime = roundToNearestThreeHours(arrivalDateTime);
       const arrivalTimestamp = Math.floor(roundedArrivalTime.getTime() / 1000);
+
+      console.log("Now:", now);
+      console.log("ArrivalDateTime:", arrivalDateTime);
+      console.log("RoundedArrivalTime:", roundedArrivalTime);
+      console.log("ArrivalTimestamp:", arrivalTimestamp);
 
       // Fetch the weather data based on selected place's coordinates and rounded arrival time
       const weather = await fetchWeather(lat, lon, arrivalTimestamp);
@@ -212,14 +192,10 @@ export default function Home() {
           priority
         />
   
-        {!showResults && (
-          <>
-            <h1 className="text-4xl font-extrabold mb-4">Do You Need a Jacket?</h1>
-            <p className="mb-4">
-              Use JacketScore, powered by AI, to decide if you&apos;ll need a jacket based on your location, weather, and duration of stay.
-            </p>
-          </>
-        )}
+        <h1 className="text-4xl font-extrabold mb-4">Do You Need a Jacket?</h1>
+        <p className="mb-4">
+          Use JacketScore, powered by AI, to decide if you&apos;ll need a jacket based on your location, weather, and duration of stay.
+        </p>
   
         {errorMessage && (
           <div className="mt-4 text-red-500">
@@ -229,11 +205,13 @@ export default function Home() {
   
         {!showResults ? (
           <>
+            {/* Google Places Autocomplete */}
             <div className="w-full text-left">
               <label className="block mb-2 text-lg font-semibold text-center">Where are you going?</label>
               <PlaceAutocomplete onSelect={handlePlaceSelect} />
             </div>
   
+            {/* Venue Type Buttons */}
             <div className="mt-6 w-full">
               <label className="block mb-2 text-lg font-semibold">Are you staying indoors or outdoors?</label>
               <div className="flex space-x-4 justify-center">
@@ -252,6 +230,7 @@ export default function Home() {
               </div>
             </div>
   
+            {/* Arrival Time Slider */}
             <div className="mt-6 w-full">
               <label className="block mb-2 text-lg font-semibold">What time are you arriving?</label>
               <input
@@ -265,6 +244,7 @@ export default function Home() {
               <div className="text-center text-sm mt-2 font-semibold">Arrival Time: {arrivalTime || hoursArray[0]}</div>
             </div>
   
+            {/* Duration Slider */}
             <div className="mt-6 w-full">
               <label className="block mb-2 text-lg font-semibold">How long will you be staying? (hours)</label>
               <input
@@ -278,6 +258,7 @@ export default function Home() {
               <div className="text-center text-sm mt-2 font-semibold">Duration: {duration} hours</div>
             </div>
   
+            {/* Gender Selection */}
             <div className="mt-6 w-full">
               <label className="block mb-2 text-lg font-semibold">What is your gender?</label>
               <div className="flex space-x-4 justify-center">
@@ -302,6 +283,7 @@ export default function Home() {
               </div>
             </div>
   
+            {/* Get Jacket Score Button */}
             <div className="mt-6 w-full">
               <button
                 className="button w-full flex items-center justify-center"
@@ -323,8 +305,9 @@ export default function Home() {
           </>
         ) : (
           <>
+            {/* Results Section */}
             <div className="mt-4 w-full">
-              <h2 className="text-3xl font-extrabold">Your Jacket Score</h2>
+              <h2 className="text-2xl">Your Jacket Score</h2>
               {jacketScore !== null && <JacketScore score={jacketScore} />}
               {recommendation && (
                 <div className="mt-4">
@@ -335,32 +318,62 @@ export default function Home() {
               {weatherData && (
                 <div className="mt-4">
                   <h2 className="text-2xl">Weather Information</h2>
-                  <div className="flex flex-col items-center">
-                    {weatherData.iconCode && (
-                      <Image
-                        src={`https://openweathermap.org/img/wn/${weatherData.iconCode}@2x.png`}
-                        alt={weatherData.precipitation}
-                        width={100}
-                        height={100}
-                      />
-                    )}
-                    <p>Temperature: {weatherData.temp ? `${Math.round(weatherData.temp)}°F` : "N/A"}</p>
-                    <p>Wind Speed: {weatherData.windSpeed ? `${Math.round(weatherData.windSpeed)} mph` : "N/A"}</p>
-                    <p>Precipitation: {weatherData.precipitation ?? "N/A"}</p>
-                  </div>
+                  {weatherData.iconCode && (
+                    <Image
+                      src={`https://openweathermap.org/img/wn/${weatherData.iconCode}@2x.png`}
+                      alt={weatherData.precipitation}
+                      width={100}
+                      height={100}
+                    />
+                  )}
+                  <p>Temperature: {weatherData.temp ? `${Math.round(weatherData.temp)}°F` : "N/A"}</p>
+                  <p>Wind Speed: {weatherData.windSpeed ? `${Math.round(weatherData.windSpeed)} mph` : "N/A"}</p>
+                  <p>Precipitation: {weatherData.precipitation ?? "N/A"}</p>
                 </div>
               )}
               <div className="mt-4 w-full">
                 <button
-                  className={getButtonClass(false)}
+                  className="bg-gray-500 text-white p-2 rounded w-full hover:bg-gray-600 dark:bg-gray-700 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-500"
                   onClick={handleEdit}
                 >
-                  <span className="button-content">Edit Inputs</span>
+                  Edit Inputs
                 </button>
               </div>
             </div>
           </>
         )}
+  
+        {/* Attribution for the Icons and Buttons */}
+        <footer className="text-center text-sm mt-8">
+          <p>
+            Icons made by{" "}
+            <a
+              href="https://www.flaticon.com/free-icons/puffer-coat"
+              title="puffer coat icons"
+              className="text-blue-500 hover:underline"
+            >
+              Iconic Panda
+            </a>{" "}
+            from{" "}
+            <a
+              href="https://www.flaticon.com/"
+              title="Flaticon"
+              className="text-blue-500 hover:underline"
+            >
+              Flaticon
+            </a>
+          </p>
+          <p>
+            Button design inspiration from{" "}
+            <a
+              href="https://uiverse.io/Madflows/stale-baboon-45"
+              title="Uiverse Button Design"
+              className="text-blue-500 hover:underline"
+            >
+              Madflows on Uiverse.io
+            </a>
+          </p>
+        </footer>
       </main>
     </div>
   );  
