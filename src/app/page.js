@@ -1,5 +1,3 @@
-// src/app/page.js
-
 "use client";
 
 import Image from "next/image";
@@ -196,7 +194,7 @@ export default function Home() {
           <>
             <h1 className="text-4xl font-extrabold mb-4">Do You Need a Jacket?</h1>
             <p className="mb-4">
-              Use JacketScore, powered by AI, to decide if you'll need a jacket based on your
+              Use JacketScore, powered by AI, to decide if you&apos;ll need a jacket based on your
               location, weather, and duration of stay.
             </p>
           </>
