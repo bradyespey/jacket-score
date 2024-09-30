@@ -206,7 +206,7 @@ export default function Home() {
 
         <h1 className="text-4xl font-extrabold mb-4">Do You Need a Jacket?</h1>
         <p className="mb-4">
-          Use JacketScore, powered by AI, to decide if you'll need a jacket based on your location, weather, and duration of stay.
+          Use JacketScore, powered by AI, to decide if you&apos;ll need a jacket based on your location, weather, and duration of stay.
         </p>
 
         {errorMessage && (
@@ -331,9 +331,11 @@ export default function Home() {
                 <div className="mt-4">
                   <h2 className="text-2xl">Weather Information</h2>
                   {weatherData.iconCode && (
-                    <img
+                    <Image
                       src={`https://openweathermap.org/img/wn/${weatherData.iconCode}@2x.png`}
                       alt={weatherData.precipitation}
+                      width={100}
+                      height={100}
                     />
                   )}
                   <p>Temperature: {weatherData.temp ? `${Math.round(weatherData.temp)}°F` : "N/A"}</p>
