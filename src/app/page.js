@@ -16,6 +16,10 @@ export default function Home() {
   });
 
   const [selectedPlace, setSelectedPlace] = useState(null);
+  const [lat, setLat] = useState(null);   // State for latitude
+  const [lon, setLon] = useState(null);   // State for longitude
+  const [city, setCity] = useState("");   // New state for city
+  const [state, setState] = useState(""); // New state for state
   const [venueType, setVenueType] = useState("");
   const [duration, setDuration] = useState(1);
   const [arrivalTime, setArrivalTime] = useState(hoursArray[0]); // Set initial arrival time
@@ -27,8 +31,12 @@ export default function Home() {
   const [jacketScore, setJacketScore] = useState(null);
   const [showResults, setShowResults] = useState(false);
 
-  const handlePlaceSelect = (place) => {
+  const handlePlaceSelect = ({ place, lat, lon, city, state }) => {
     setSelectedPlace(place);
+    setLat(lat);     // Store latitude
+    setLon(lon);     // Store longitude
+    setCity(city);   // Store city
+    setState(state); // Store state
     setErrorMessage("");
   };
 
@@ -64,14 +72,11 @@ export default function Home() {
   };
 
   const handleJacketScore = async () => {
-    if (selectedPlace && venueType && arrivalTime && duration && gender) {
+    if (selectedPlace && venueType && arrivalTime && duration && gender && lat && lon) {
       setIsLoading(true); // Start loading
       setErrorMessage(""); // Clear any previous errors
       setRecommendation(null);
       setJacketScore(null);
-
-      const lat = selectedPlace.geometry?.location.lat();
-      const lon = selectedPlace.geometry?.location.lng();
 
       // Parse arrivalTime
       const now = new Date();
@@ -104,6 +109,8 @@ export default function Home() {
           wind: weather.windSpeed,
           precipitation: weather.precipitation,
           venueType,
+          city,   // Include city
+          state,  // Include state
         };
 
         // Add gender if it's not "Prefer Not to Say"

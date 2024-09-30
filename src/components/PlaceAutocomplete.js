@@ -16,12 +16,29 @@ const PlaceAutocomplete = ({ onSelect }) => {
       if (inputRef.current) {
         autocomplete = new window.google.maps.places.Autocomplete(inputRef.current, {
           types: ['establishment'], // Limit results to establishments
-          fields: ['geometry', 'name', 'formatted_address', 'place_id'], // Request necessary fields
+          fields: ['geometry', 'name', 'formatted_address', 'place_id', 'address_components'], // Include geometry to get lat and lon
         });
 
         autocomplete.addListener('place_changed', () => {
           const place = autocomplete.getPlace();
-          onSelect(place);
+          
+          // Ensure that geometry exists and extract lat/lon
+          if (place.geometry) {
+            const lat = place.geometry.location.lat();
+            const lon = place.geometry.location.lng();
+            
+            // Extract city and state using helper function
+            const { city, state } = getCityAndState(place);
+
+            // Pass the lat, lon, place, city, and state to the parent component
+            onSelect({
+              place,
+              lat,
+              lon,
+              city,
+              state
+            });
+          }
         });
       }
     });
@@ -41,6 +58,25 @@ const PlaceAutocomplete = ({ onSelect }) => {
       className="p-2 border rounded w-full max-w-lg dark:bg-gray-800 dark:border-gray-600 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
     />
   );
+};
+
+// Helper function to extract city and state from address_components
+const getCityAndState = (place) => {
+  let city = '';
+  let state = '';
+
+  if (place.address_components) {
+    place.address_components.forEach(component => {
+      if (component.types.includes('locality')) {
+        city = component.long_name; // City
+      }
+      if (component.types.includes('administrative_area_level_1')) {
+        state = component.short_name; // State
+      }
+    });
+  }
+
+  return { city, state };
 };
 
 export default PlaceAutocomplete;
