@@ -14,7 +14,7 @@ const geistMono = localFont({
 });
 
 export const metadata = {
-  title: "JacketScore - AI Powered Jacket Recommendation",
+  title: "JacketScore - AI-Powered Jacket Recommendation",
   description: "Find out if you need a jacket for your outing based on AI recommendations.",
 };
 
