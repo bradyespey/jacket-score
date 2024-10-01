@@ -23,8 +23,19 @@ export async function POST(request) {
       return NextResponse.json({ error: "Comment cannot be empty" }, { status: 400 });
     }
 
+    // Check if refresh token is present
+    if (!process.env.GMAIL_REFRESH_TOKEN) {
+      console.error("Missing GMAIL_REFRESH_TOKEN");
+      throw new Error("Missing GMAIL_REFRESH_TOKEN");
+    }
+
     // Get a new access token using the refresh token
     const accessToken = await oauth2Client.getAccessToken();
+
+    if (!accessToken.token) {
+      console.error("Failed to obtain access token");
+      throw new Error("Failed to obtain access token");
+    }
 
     // Set up Nodemailer transport with OAuth2
     const transporter = nodemailer.createTransport({
@@ -35,14 +46,14 @@ export async function POST(request) {
         clientId: process.env.GMAIL_CLIENT_ID,
         clientSecret: process.env.GMAIL_CLIENT_SECRET,
         refreshToken: process.env.GMAIL_REFRESH_TOKEN,
-        accessToken: accessToken.token,
+        accessToken: accessToken.token, // Use the access token obtained
       },
     });
 
     // Email options
     const mailOptions = {
       from: process.env.GMAIL_USER,
-      to: "baespey@gmail.com",
+      to: "baespey@gmail.com", // Replace with your email
       subject: "New Comment from JacketScore",
       text: `You received a new comment: \n\n${comment}`,
     };
@@ -52,7 +63,7 @@ export async function POST(request) {
 
     return NextResponse.json({ message: "Comment submitted successfully" }, { status: 200 });
   } catch (error) {
-    console.error("Error sending email:", error);
+    console.error("Error sending email:", error.message);
     return NextResponse.json({ error: "Failed to send comment" }, { status: 500 });
   }
 }
