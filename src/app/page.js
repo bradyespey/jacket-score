@@ -31,6 +31,12 @@ export default function Home() {
   const [jacketScore, setJacketScore] = useState(null);
   const [showResults, setShowResults] = useState(false);
 
+  // New states for handling comments
+  const [comment, setComment] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [commentSuccess, setCommentSuccess] = useState(false);
+  const [commentError, setCommentError] = useState("");
+
   const handlePlaceSelect = ({ place, lat, lon, city, state }) => {
     setSelectedPlace(place);
     setLat(lat);     // Store latitude
@@ -179,6 +185,42 @@ export default function Home() {
   const handleEdit = () => {
     setShowResults(false);
     setErrorMessage("");
+  };
+
+  // Handle comment submission
+  const handleCommentSubmit = async (e) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    setCommentError("");
+    setCommentSuccess(false);
+
+    if (!comment.trim()) {
+      setCommentError("Please enter a comment.");
+      setIsSubmitting(false);
+      return;
+    }
+
+    try {
+      const response = await fetch("/api/submitComment", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ comment }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || "Failed to submit comment");
+      }
+
+      setCommentSuccess(true);
+      setComment(""); // Clear comment input after successful submission
+    } catch (error) {
+      setCommentError(error.message);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const getButtonClass = (isSelected) => {
@@ -365,6 +407,33 @@ export default function Home() {
             </div>
           </>
         )}
+
+        {/* Comment Section */}
+        <section className="mt-8 w-full">
+          <h2 className="text-2xl font-bold mb-4">Leave a Comment</h2>
+          <form onSubmit={handleCommentSubmit} className="w-full text-left">
+            <textarea
+              className="w-full h-32 p-2 border rounded-lg dark:bg-gray-800 dark:text-white"
+              placeholder="Share your thoughts about JacketScore..."
+              value={comment}
+              onChange={(e) => setComment(e.target.value)}
+              required
+            />
+            {commentError && <p className="text-red-500 mt-2">{commentError}</p>}
+            {commentSuccess && <p className="text-green-500 mt-2">Comment submitted successfully!</p>}
+            
+            {/* Apply margin-top directly to the button */}
+            <button
+              className="mt-4 button w-full flex items-center justify-center bg-gray-700 text-white rounded-full py-2 px-4 hover:bg-gradient-to-r hover:from-purple-500 hover:to-blue-500 transition-all duration-300 ease-in-out"
+              onClick={handleCommentSubmit}
+              disabled={isSubmitting}
+            >
+              <span className="button-content">
+                {isSubmitting ? "Submitting..." : "Submit Comment"}
+              </span>
+            </button>
+          </form>
+        </section>
 
         {/* Attribution for the Icons and Buttons */}
         <footer className="text-center text-sm mt-8">
