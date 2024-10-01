@@ -8,9 +8,10 @@ const OAuth2 = google.auth.OAuth2;
 const oauth2Client = new OAuth2(
   process.env.GMAIL_CLIENT_ID,
   process.env.GMAIL_CLIENT_SECRET,
-  "https://developers.google.com/oauthplayground" // Redirect URL, same as used in OAuth Playground
+  "https://jacketscore.com/api/oauth2callback"  // Redirect URL for production
 );
 
+// Set the refresh token from environment variables
 oauth2Client.setCredentials({
   refresh_token: process.env.GMAIL_REFRESH_TOKEN,
 });
@@ -46,14 +47,14 @@ export async function POST(request) {
         clientId: process.env.GMAIL_CLIENT_ID,
         clientSecret: process.env.GMAIL_CLIENT_SECRET,
         refreshToken: process.env.GMAIL_REFRESH_TOKEN,
-        accessToken: accessToken.token, // Use the access token obtained
+        accessToken: accessToken.token,  // Use the access token obtained
       },
     });
 
     // Email options
     const mailOptions = {
       from: process.env.GMAIL_USER,
-      to: "baespey@gmail.com", // Replace with your email
+      to: "baespey@gmail.com",  // Replace with the email you want to send to
       subject: "New Comment from JacketScore",
       text: `You received a new comment: \n\n${comment}`,
     };
