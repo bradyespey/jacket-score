@@ -42,7 +42,7 @@ export async function POST(request) {
     // Email options
     const mailOptions = {
       from: process.env.GMAIL_USER,
-      to: "your_email@example.com", // Replace with your email
+      to: "baespey@gmail.com",
       subject: "New Comment from JacketScore",
       text: `You received a new comment: \n\n${comment}`,
     };
