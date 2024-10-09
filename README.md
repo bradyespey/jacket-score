@@ -17,7 +17,11 @@ Check out the live application at [jacketscore.com](https://jacketscore.com)
 
 ## 📸 Screenshots
 
-*(Include screenshots of your app here to showcase its features and design.)*
+### Main Page
+<img src="public/images/jacketscore-page.png" alt="JacketScore Main Page" width="400">
+
+### Results Page
+<img src="public/images/jacketscore-results.png" alt="JacketScore Results" width="400">
 
 ## 🛠️ Installation & Setup
 
@@ -163,11 +167,3 @@ This project is licensed under the [MIT License](LICENSE).
 ## 📧 Contact
 
 For any inquiries or feedback, please leave a comment on the [jacketscore.com](https://jacketscore.com) website.
-
----
-
-**Note:** Ensure that any files or directories listed in your `.gitignore` are not included in your commits to the repository. This includes sensitive files like `.env.local` and build artifacts like `node_modules/` and `.next/`.
-
----
-
-If you have any questions or need further assistance, feel free to reach out!
