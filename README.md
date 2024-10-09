@@ -1,36 +1,117 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+JacketScore
 
-## Getting Started
+JacketScore is a web application that helps users decide whether they need to bring a jacket based on personalized weather forecasts and event details.
 
-First, run the development server:
+🌟 Features
 
-```bash
+	•	Location-Based Forecasts: Search for any location using Google Places Autocomplete.
+	•	Personalized Recommendations: Get tailored advice based on gender, venue type, arrival time, and duration.
+	•	AI Integration: Leverages OpenAI’s ChatGPT to provide natural language recommendations.
+	•	Weather Data: Utilizes OpenWeather API for accurate and up-to-date forecasts.
+	•	Responsive Design: Built with Next.js and Tailwind CSS for a seamless experience on any device.
+	•	Dark Mode Support: Enjoy a user-friendly interface in both light and dark modes.
+
+🚀 Demo
+
+Check out the live application at jacketscore.com
+
+📸 Screenshots
+
+(Include screenshots of your app here if possible)
+
+🛠️ Installation & Setup
+
+Prerequisites
+
+	•	Node.js (v14 or later)
+	•	npm or yarn
+
+Clone the Repository
+
+git clone https://github.com/yourusername/JacketScore.git
+cd JacketScore
+
+Install Dependencies
+
+npm install
+# or
+yarn install
+
+Environment Variables
+
+Create a .env.local file in the root directory and add your API keys:
+
+NEXT_PUBLIC_GOOGLE_API_KEY=your_google_api_key
+OPENWEATHER_API_KEY=your_openweather_api_key
+OPENAI_API_KEY=your_openai_api_key
+GMAIL_USER=your_gmail_username
+GMAIL_CLIENT_ID=your_gmail_client_id
+GMAIL_CLIENT_SECRET=your_gmail_client_secret
+GMAIL_REFRESH_TOKEN=your_gmail_refresh_token
+
+Note: These keys are required for the app to function correctly. Ensure they are kept secret and not committed to version control.
+
+Run the Development Server
+
 npm run dev
 # or
 yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open http://localhost:3000 to view the app in the browser.
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+🧰 Technologies Used
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+	•	Next.js: React framework for server-side rendering and static site generation.
+	•	React: JavaScript library for building user interfaces.
+	•	Tailwind CSS: Utility-first CSS framework for styling.
+	•	OpenAI API: For AI-generated recommendations.
+	•	OpenWeather API: For fetching weather forecasts.
+	•	Google Places API: For location search and autocomplete.
+	•	Nodemailer: For handling email submissions via Gmail OAuth2.
 
-## Learn More
+📡 APIs and Integration
 
-To learn more about Next.js, take a look at the following resources:
+Google Places API
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+	•	Enables location search with autocomplete functionality.
+	•	Restricted API key for specific domains.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+OpenWeather API
 
-## Deploy on Vercel
+	•	Provides 5-day/3-hour weather forecasts.
+	•	Rounds temperature and wind speed to whole numbers for simplicity.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+OpenAI ChatGPT API
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+	•	Generates personalized jacket recommendations.
+	•	Considers user inputs like gender, location, weather conditions, and more.
+
+Nodemailer with Gmail OAuth2
+
+	•	Handles comment submissions and sends email notifications.
+	•	Securely configured using OAuth2 credentials.
+
+🤖 How It Works
+
+	1.	User Inputs:
+	•	Select location, venue type, arrival time, duration, and optionally, gender.
+	2.	Weather Fetching:
+	•	Retrieves weather data for the selected time and location.
+	3.	AI Recommendation:
+	•	Sends data to OpenAI API for a personalized recommendation.
+	4.	Jacket Score Calculation:
+	•	Calculates a score from 0-100% indicating the need for a jacket.
+	5.	Results Display:
+	•	Shows the jacket score, weather information, and AI recommendation.
+
+📝 Contributing
+
+Contributions are welcome! Please fork the repository and create a pull request with your changes.
+
+📄 License
+
+This project is licensed under the MIT License.
+
+📧 Contact
+
+For any inquiries or feedback, please leave a comment on the jacketscore.com website.
