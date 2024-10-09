@@ -4,12 +4,12 @@
 
 ## 🌟 Features
 
-- **Location-Based Forecasts:** Search for any location using Google Places Autocomplete.
-- **Personalized Recommendations:** Get tailored advice based on gender, venue type, arrival time, and duration.
-- **AI Integration:** Leverages OpenAI’s ChatGPT to provide natural language recommendations.
-- **Weather Data:** Utilizes OpenWeather API for accurate and up-to-date forecasts.
-- **Responsive Design:** Built with Next.js and Tailwind CSS for a seamless experience on any device.
-- **Dark Mode Support:** Enjoy a user-friendly interface in both light and dark modes.
+- **Location-Based Forecasts:** Search for any location using Google Places Autocomplete
+- **Personalized Recommendations:** Get tailored advice based on gender, venue type, arrival time, and duration
+- **AI Integration:** Leverages OpenAI’s ChatGPT to provide natural language recommendations
+- **Weather Data:** Utilizes OpenWeather API for accurate and up-to-date forecasts
+- **Responsive Design:** Built with Next.js and Tailwind CSS for a seamless experience on any device
+- **Dark Mode Support:** Enjoy a user-friendly interface in both light and dark modes
 
 ## 🚀 Demo
 
@@ -17,11 +17,17 @@ Check out the live application at [jacketscore.com](https://jacketscore.com)
 
 ## 📸 Screenshots
 
-### Main Page
-<img src="public/images/jacketscore-page.png" alt="JacketScore Main Page" width="400">
+## JacketScore Screenshots
 
-### Results Page
-<img src="public/images/jacketscore-results.png" alt="JacketScore Results" width="400">
+<p align="center">
+  <strong>Main Page</strong><br>
+  <img src="public/images/jacketscore-page.png" alt="JacketScore Main Page" width="400">
+</p>
+
+<p align="center">
+  <strong>Results Page</strong><br>
+  <img src="public/images/jacketscore-results.png" alt="JacketScore Results" width="400">
+</p>
 
 ## 🛠️ Installation & Setup
 
