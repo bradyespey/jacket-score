@@ -1,6 +1,6 @@
 # JacketScore
 
-**JacketScore** is a web application that helps users decide whether they need to bring a jacket based on personalized weather forecasts and event details.
+**JacketScore** is a web app that helps users decide whether they need to bring a jacket based on personalized location, weather forecasts and event details utilizing AI.
 
 ## 🌟 Features
 
@@ -73,48 +73,48 @@ Open [http://localhost:3000](http://localhost:3000) to view the app in the brows
 
 ## 🧰 Technologies Used
 
-- **Next.js:** React framework for server-side rendering and static site generation.
-- **React:** JavaScript library for building user interfaces.
-- **Tailwind CSS:** Utility-first CSS framework for styling.
-- **OpenAI API:** For AI-generated recommendations.
-- **OpenWeather API:** For fetching weather forecasts.
-- **Google Places API:** For location search and autocomplete.
-- **Nodemailer:** For handling email submissions via Gmail OAuth2.
+- **Next.js:** React framework for server-side rendering and static site generation
+- **React:** JavaScript library for building user interfaces
+- **Tailwind CSS:** Utility-first CSS framework for styling
+- **Google Places API:** For location search and autocomplete
+- **OpenWeather API:** For fetching weather forecasts
+- **OpenAI API:** For AI-generated recommendations
+- **Nodemailer:** For handling email comment submissions via Gmail OAuth2
 
 ## 📡 APIs and Integration
 
 ### **Google Places API**
 
-- Enables location search with autocomplete functionality.
-- Restricted API key for specific domains.
+- Enables location search with autocomplete functionality
+- Restricted API key for specific domains
 
 ### **OpenWeather API**
 
-- Provides 5-day/3-hour weather forecasts.
-- Rounds temperature and wind speed to whole numbers for simplicity.
+- Provides 5-day/3-hour weather forecasts
+- Rounds temperature and wind speed to whole numbers for simplicity
 
 ### **OpenAI ChatGPT API**
 
-- Generates personalized jacket recommendations.
-- Considers user inputs like gender, location, weather conditions, and more.
+- Considers user inputs like location, indoors/outdoors, arrival time, duration of stay, gender, and weather conditions based on location data
+- Generates personalized jacket recommendations
 
 ### **Nodemailer with Gmail OAuth2**
 
-- Handles comment submissions and sends email notifications.
-- Securely configured using OAuth2 credentials.
+- Handles comment submissions and sends email notifications
+- Securely configured using OAuth2 credentials
 
 ## 🤖 How It Works
 
 1. **User Inputs:**
-   - Select location, venue type, arrival time, duration, and optionally, gender.
+   - Select location, venue type, arrival time, duration, and optionally, gender
 2. **Weather Fetching:**
-   - Retrieves weather data for the selected time and location.
+   - Retrieves weather data for the selected time and location
 3. **AI Recommendation:**
-   - Sends data to OpenAI API for a personalized recommendation.
+   - Sends data to OpenAI API for a personalized recommendation
 4. **Jacket Score Calculation:**
-   - Calculates a score from 0-100% indicating the need for a jacket.
+   - Calculates a score from 0-100% indicating the need for a jacket
 5. **Results Display:**
-   - Shows the jacket score, weather information, and AI recommendation.
+   - Shows the jacket score, AI recommendation, and weather information
 
 ## 📁 Project Structure
 
