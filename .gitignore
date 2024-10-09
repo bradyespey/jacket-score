@@ -1,7 +1,7 @@
 # dependencies
 /node_modules/
 /.pnp
-.pnp.js
+.pnp.jsgit remote -v
 .yarn/install-state.gz
 
 # testing
