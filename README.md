@@ -72,6 +72,19 @@ GMAIL_REFRESH_TOKEN=YOUR_GMAIL_REFRESH_TOKEN
 - 📊 **Results**: Jacket score display with progress bar, weather information, AI recommendation, and edit inputs option
 - 📧 **Comments**: Integrated comment system with email notifications
 
+## 🤖 How It Works
+
+1. **User Inputs:**
+   - Select location, venue type, arrival time, duration, and optionally, gender
+2. **Weather Fetching:**
+   - Retrieves weather data for the selected time and location
+3. **AI Recommendation:**
+   - Sends data to OpenAI API for a personalized recommendation
+4. **Jacket Score Calculation:**
+   - Calculates a score from 0-100% indicating the need for a jacket
+5. **Results Display:**
+   - Shows the jacket score, AI recommendation, and weather information
+
 ## Directory Map
 ```
 JacketScore/
