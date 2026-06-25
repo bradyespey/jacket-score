@@ -12,7 +12,7 @@ Web application that helps users decide whether they need a jacket based on weat
 - 📊 **Analytics**: Usage tracking and performance monitoring
 
 ## Tech Stack
-- ⚛️ **Frontend**: Next.js 14 + React 18 + Tailwind CSS
+- ⚛️ **Frontend**: Next.js 16 + React 19 + Tailwind CSS 4
 - 🎨 **UI**: Responsive design with dark mode support
 - 🚀 **Hosting**: Vercel with serverless functions
 - 🗺️ **Location**: Google Places API with autocomplete
