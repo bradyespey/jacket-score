@@ -1,25 +1,27 @@
 import { useRef, useEffect } from 'react';
-import { Loader } from '@googlemaps/js-api-loader';
+import { importLibrary, setOptions } from '@googlemaps/js-api-loader';
 
 const PlaceAutocomplete = ({ onSelect }) => {
   const inputRef = useRef(null);
 
   useEffect(() => {
     let autocomplete;
+    let placeChangedListener;
+    let isMounted = true;
 
-    const loader = new Loader({
-      apiKey: process.env.NEXT_PUBLIC_GOOGLE_API_KEY,
-      libraries: ['places'],
-    });
+    const apiKey = process.env.NEXT_PUBLIC_GOOGLE_API_KEY;
+    if (!apiKey) return undefined;
 
-    loader.load().then(() => {
-      if (inputRef.current) {
-        autocomplete = new window.google.maps.places.Autocomplete(inputRef.current, {
+    setOptions({ key: apiKey });
+
+    importLibrary('places').then(({ Autocomplete }) => {
+      if (inputRef.current && isMounted) {
+        autocomplete = new Autocomplete(inputRef.current, {
           types: ['establishment'], // Limit results to establishments
           fields: ['geometry', 'name', 'formatted_address', 'place_id', 'address_components'], // Include geometry to get lat and lon
         });
 
-        autocomplete.addListener('place_changed', () => {
+        placeChangedListener = autocomplete.addListener('place_changed', () => {
           const place = autocomplete.getPlace();
           
           // Ensure that geometry exists and extract lat/lon
@@ -41,12 +43,13 @@ const PlaceAutocomplete = ({ onSelect }) => {
           }
         });
       }
+    }).catch((error) => {
+      console.error('Failed to load Google Places autocomplete', error);
     });
 
     return () => {
-      if (autocomplete) {
-        window.google.maps.event.clearInstanceListeners(autocomplete);
-      }
+      isMounted = false;
+      placeChangedListener?.remove();
     };
   }, [onSelect]);
 
