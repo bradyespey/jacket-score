@@ -54,6 +54,14 @@ export async function POST(request) {
       );
     }
 
+    if (!process.env.OPENAI_API_KEY) {
+      console.error('OpenAI recommendation service is missing OPENAI_API_KEY.');
+      return NextResponse.json(
+        { error: 'JacketScore AI is not configured yet.' },
+        { status: 500 }
+      );
+    }
+
     // Initialize OpenAI client
     const openai = new OpenAI({
       apiKey: process.env.OPENAI_API_KEY,
@@ -96,18 +104,13 @@ export async function POST(request) {
     const recommendation = response.choices[0].message.content.trim();
     return NextResponse.json({ recommendation });
   } catch (error) {
-    console.error('Error in getChatGPTRecommendation API route:', error);
+    const status = error?.status || error?.response?.status || 500;
+    const type = error?.type || error?.response?.data?.error?.type || 'unknown';
+    console.error('OpenAI recommendation request failed:', { status, type });
 
-    // Handle OpenAI-specific error
-    if (error.response) {
-      console.error('OpenAI error response:', JSON.stringify(error.response.data, null, 2));
-      return NextResponse.json(
-        { error: error.response.data.error.message },
-        { status: error.response.status }
-      );
-    }
-
-    // General error fallback
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return NextResponse.json(
+      { error: 'JacketScore AI could not generate a recommendation right now.' },
+      { status: status >= 400 && status < 600 ? status : 500 }
+    );
   }
 }
