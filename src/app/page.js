@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useState } from "react";
 import PlaceAutocomplete from "../components/PlaceAutocomplete";
 import JacketScore from "../components/JacketScore";
+import ThemeToggle from "../components/ThemeToggle";
 import ClipLoader from "react-spinners/ClipLoader";
 
 export default function Home() {
@@ -228,7 +229,10 @@ export default function Home() {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen p-8 sm:p-20 font-sans dark:bg-black dark:text-white">
+    <div className="relative flex flex-col items-center justify-center min-h-screen p-8 sm:p-20 font-sans dark:bg-black dark:text-white">
+      <div className="absolute top-4 right-4 sm:top-6 sm:right-6">
+        <ThemeToggle />
+      </div>
       <main className="flex flex-col gap-8 items-center w-full max-w-lg text-center">
         {/* Image */}
         <Image
@@ -413,7 +417,7 @@ export default function Home() {
           <h2 className="text-2xl font-bold mb-4">Leave a Comment</h2>
           <form onSubmit={handleCommentSubmit} className="w-full text-left">
             <textarea
-              className="w-full h-32 p-2 border rounded-lg dark:bg-gray-800 dark:text-white"
+              className="w-full h-32 p-2 border border-gray-300 rounded-lg text-gray-900 placeholder-gray-500 dark:bg-gray-800 dark:border-gray-600 dark:text-white dark:placeholder-gray-400"
               placeholder="Share your thoughts about JacketScore..."
               value={comment}
               onChange={(e) => setComment(e.target.value)}

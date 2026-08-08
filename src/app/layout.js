@@ -18,9 +18,23 @@ export const metadata = {
   description: "Find out if you need a jacket for your outing based on AI recommendations.",
 };
 
+const themeInitScript = `
+(function () {
+  try {
+    var stored = localStorage.getItem("jacketscore-theme") || "system";
+    var isDark = stored === "dark" || (stored === "system" && window.matchMedia("(prefers-color-scheme: dark)").matches);
+    if (isDark) document.documentElement.classList.add("dark");
+    if (stored === "light") document.documentElement.classList.add("light");
+  } catch (e) {}
+})();
+`;
+
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
+      </head>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         {children}
       </body>

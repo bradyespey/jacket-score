@@ -13,6 +13,7 @@
     "@sendgrid/mail": "^8.1.6",
     "@sentry/nextjs": "10.61.0",
     "googleapis": "^173.0.0",
+    "lucide-react": "^1.30.0",
     "next": "16.2.9",
     "nodemailer": "^9.0.1",
     "openai": "^6.45.0",

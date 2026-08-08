@@ -58,7 +58,7 @@ const PlaceAutocomplete = ({ onSelect }) => {
       ref={inputRef}
       type="text"
       placeholder="Enter a business or place"
-      className="p-2 border rounded w-full max-w-lg dark:bg-gray-800 dark:border-gray-600 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+      className="p-2 border border-gray-300 rounded w-full max-w-lg text-gray-900 placeholder-gray-500 dark:bg-gray-800 dark:border-gray-600 dark:text-white dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
     />
   );
 };

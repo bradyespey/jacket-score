@@ -13,7 +13,7 @@ Web application that helps users decide whether they need a jacket based on weat
 
 ## Tech Stack
 - ⚛️ **Frontend**: Next.js 16 + React 19 + Tailwind CSS 3
-- 🎨 **UI**: Responsive design with dark mode support
+- 🎨 **UI**: Responsive design with a selectable Light / System / Dark appearance toggle (defaults to System)
 - 🚀 **Hosting**: Vercel with serverless functions
 - 🗺️ **Location**: Google Places API with autocomplete
 - 🌤️ **Weather**: OpenWeather API (5-day/3-hour forecasts)
